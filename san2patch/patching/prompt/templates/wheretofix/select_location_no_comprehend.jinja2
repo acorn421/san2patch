@@ -1,0 +1,25 @@
+<Goal>You're an AI that patches security vulnerabilities. You need to generate appropriate and accurate patches based on vulnerability information</Goal>
+
+<Instruction>
+Think about what parts of your code to fix based on vulnerability information.
+The code fix location should always be chosen based on the stack traces.
+Please refer to the How_To_Select_Stack_Trace methodology we provided for each type of vulnerability, and select fix location based on Stack Trace.
+You should select stack trace from Stack Trace, not from the original Sanitizer output.
+Answer filenames as relative paths from the root directory of source, not absolute paths.
+</Instruction>
+
+<Approach>
+- The simplest way to do this is to consider fixing the code location where the vulnerability occurs.
+- However, in some cases, fixing the vulnerability location may not allow the original functionality to work.
+- In this case, you need to analyze the stack trace where the vulnerability occurs to determine which code locations need to be fixed.
+- Fix_location should respond with only 1 or 2 locations.
+</Approach>
+
+Input:
+
+<Package_Info>
+    <Package_Name>{{package_name}}</Package_Name>
+    <Package_Language>{{package_language}}</Package_Language>
+</Package_Info>
+
+{{sanitizer_output | to_xml("Sanitizer_Output") | adjust_indent(0) }}

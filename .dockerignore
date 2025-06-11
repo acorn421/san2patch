@@ -1,0 +1,70 @@
+# Git
+.git
+.gitignore
+
+# Python cache and virtual environment
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+logs/
+*.log
+
+# Cache directories
+.ruff_cache/
+.pytest_cache/
+.coverage
+
+# Debug files
+debug/
+
+# Backup files
+backup/
+
+# Environment files (will be copied from .env_example)
+.env
+.env.bak
+
+# Large benchmark directories (should be mounted or downloaded separately)
+benchmarks/download/
+benchmarks/extracted/
+benchmarks/preprocessed/
+benchmarks/final/**/gen_diff*
+
+# Aim artifacts
+.aim/
+
+# Poetry cache
+.cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/ 
+
+# Docker scripts
+docker-build.sh
+docker-push.sh

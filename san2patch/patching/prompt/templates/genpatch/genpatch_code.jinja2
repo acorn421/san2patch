@@ -1,0 +1,44 @@
+<Goal>You are responsible for patching a vulnerability found in an open source package, and you need to create a patch file that fixes the vulnerability based on a bunch of information.</Goal>
+
+<Package_Info>
+    <Package_Name>{{package_name}}</Package_Name>
+    <Package_Language>{{package_language}}</Package_Language>
+</Package_Info>
+
+{{vuln_info_final | to_xml("Vulnerability_Info")}}
+
+<How-To-Fix>
+    <Guideline>{{fix_strategy.guideline}}</Guideline>
+    <Description>{{fix_strategy.description}}</Description>
+</How-To-Fix>
+
+{% if func_def|length > 0 %}
+<Fix_Target_Function_Info>
+    <Function_Signature>{{func_def}}</Function_Signature>
+    <Function_Return_Statements>{{func_ret}}</Function_Return_Statements>
+</Fix_Target_Function_Info>
+{% endif %}
+
+<Fix_Target_Code>
+{{original_function}}
+</Fix_Target_Code>
+
+<Instruction>
+Using the information above, generate candidates for modified code that fixes the vulnerability.
+Generate code that is modified in as many different ways as possible. Each candidate should be different from the others.
+You should only fix the Fix_Target_Code unconditionally. Don't respond the code in Fix_Target_Function_Info.
+Generate the actual fixed code, not just a patch file that modifies the code.
+</Instruction>
+
+<Important_Note>
+- Only the source code provided by Fix_Target_Code is checked and modified line by line, and no additional functions are modified.
+- Do not modify using ambiguous source code.
+- The source code should be modified as simply as possible, without complex modifications.
+- Source code patch must only patch the vulnerability within the Fix_Target_Code.
+- You must patch the vulnerability and output safe Fix_Target_Code code without any vulnerabilities.
+- The patched code must have the same start and end as the Fix_Target_Code we provided.
+- Tabs and spaces used in Fix_Target_Code are preserved in the generated patched.
+- Keep all parentheses used in Fix_Target_Code unchanged.
+- The functionality of the existing Fix_Target_Code must not be changed.
+- When you modify the source code, the rationale for modifying the source code must also be output.
+</Important_Note>

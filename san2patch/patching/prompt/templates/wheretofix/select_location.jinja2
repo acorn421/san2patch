@@ -1,0 +1,50 @@
+<Goal>You're an AI that patches security vulnerabilities. You need to generate appropriate and accurate patches based on vulnerability information</Goal>
+
+<Instruction>
+Think about what parts of your code to fix based on vulnerability information.
+The code fix location should always be chosen based on the stack traces.
+Please refer to the How_To_Select_Stack_Trace methodology we provided for each type of vulnerability, and select fix location based on Stack Trace.
+You should select stack trace from Stack Trace, not from the original Sanitizer output.
+Answer filenames as relative paths from the root directory of source, not absolute paths.
+</Instruction>
+
+<How_To_Select_Stack_Trace>
+- When selecting a stack trace to determine where to apply the patch, it is recommended to start at the top, as it is more directly related to the vulnerability.
+{% if "CWE-416" == vuln_info_final.type %}- For use after free vulnerabilities, you need to fix the memory freeing part and the memory accessing part at the same time.
+- Therefore, one entry in **memory_free_stack_trace and one entry in crash_stack_trace must be selected at the same time**.
+{% elif "CWE-122" == vuln_info_final.type %}- For Heap-based buffer overflow vulnerabilities, you need to fix the part that allocates memory or the part that accesses memory.
+- Therefore, you need to **select one entry in memory_allocate_stack_trace or crash_stack_trace**.
+{% elif "CWE-119" == vuln_info_final.type %}- For the remaining Buffer Overflow vulnerabilities except Heap-based buffer overflow, you need to fix the part that accesses corrupted memory.
+- Therefore, you need to **select one entry in crash_stack_trace**.
+{% else %}- For Null Pointer Dereference, Integer Overflow or Wraparound, Divide by Zero, etc. vulnerabilities, you need to fix one of the top few parts of the call stack where the crash occurred.
+- Therefore, we need to **select one entry in crash_stack_trace**.
+{% endif %}</How_To_Select_Stack_Trace>
+
+<Approach>
+- The simplest way to do this is to consider fixing the code location where the vulnerability occurs.
+- However, in some cases, fixing the vulnerability location may not allow the original functionality to work.
+- In this case, you need to analyze the stack trace where the vulnerability occurs to determine which code locations need to be fixed.
+- Fix_location should respond with only 1 or 2 locations.
+</Approach>
+
+Input:
+
+{{vuln_info_final | to_xml("Vulnerability_Info") | adjust_indent(0)}}
+
+<Crash_Stack_Trace>
+{% for trace in crash_stack_trace %}
+{{trace | adjust_indent(1)}}
+{% endfor %}
+</Crash_Stack_Trace>
+
+<Memory_Allocate_Stack_Trace>
+{% for trace in memory_allocate_stack_trace %}
+{{trace | adjust_indent(1)}}
+{% endfor %}
+</Memory_Allocate_Stack_Trace>
+
+<Memory_Free_Stack_Trace>
+{% for trace in memory_free_stack_trace %}
+{{trace | adjust_indent(1)}}
+{% endfor %}
+</Memory_Free_Stack_Trace>

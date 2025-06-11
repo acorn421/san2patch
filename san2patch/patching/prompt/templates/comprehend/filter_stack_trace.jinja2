@@ -1,0 +1,30 @@
+<Instruction>
+In the original stack trace, we will now exclude code that is not modifiable based on function name and file name, or is not in a location related to the vulnerability.
+Please remove unnecessary entries from the stack trace based on the method below.
+</Instruction>
+
+<Approach>
+- Exclude code that is not source code for the current project, which means exclude library code or code from external libraries, especially libc or libasan
+- Exclude custom allocate functions or custom free functions, as these functions often have memory-related function names such as "memcpy", "malloc", "free", "calloc", or "realloc" in their function names.
+- Exclude functions that are generated during the build process or kernel-level functions. For example, functions like _start.
+</Approach>
+
+Input:
+
+<Crash_Stack_Trace>
+{% for trace in crash_stack_trace %}
+{{trace | trace_to_str | adjust_indent(1)}}
+{% endfor %}
+</Crash_Stack_Trace>
+
+<Memory_Allocate_Stack_Trace>
+{% for trace in memory_allocate_stack_trace %}
+{{trace | trace_to_str | adjust_indent(1)}}
+{% endfor %}
+</Memory_Allocate_Stack_Trace>
+
+<Memory_Free_Stack_Trace>
+{% for trace in memory_free_stack_trace %}
+{{trace | trace_to_str | adjust_indent(1)}}
+{% endfor %}
+</Memory_Free_Stack_Trace>

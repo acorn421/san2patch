@@ -1,0 +1,27 @@
+<Goal>Think about what parts of your code to fix based on vulnerability information.</Goal>
+
+<Instruction>
+Before you decide where to fix your code, try parsing the call stack trace from the Sanitizer output.
+The stack trace output from a sanitizer varies depending on the type of sanitizer and the type of vulnerability, but it typically contains the following information
+
+- Crash stack trace:
+    - the stack trace of the execution that directly caused the crash.
+    - For memory vulnerabilities, this is the same as the memory access stack trace because the vulnerability occurs when accessing memory.
+- Memory allocation stack trace:
+    - Memory allocate stack trace of the vulnerability in the sanitizer output. If unknown, leave blank.
+    - Often exists after logs such as "allocated from ..." and "allocated by ...".
+- Memory free stack trace:
+    = Memory free stack trace of the vulnerability in the sanitizer output. If unknown, leave blank.
+    - Often exists after logs such as "freed by ..."
+
+Depending on the type of vulnerability, all or some of the above stack traces may be present in the sanitizer output.
+Include all original stack traces in the sanitizer output. Do not modify or remove stack traces arbitrarily, and include the original stack traces as they are.
+Parse each stack trace type separately. If it doesn't exist, give me the empty list.
+
+We only need the file name, the function name, and the line number of the function in the file; we don't need any memory address information in the stack trace.
+Answer filenames as relative paths from the root directory of source, not absolute paths.
+Note that the sanitizer output includes a stack trace, and the full source code exists under the `<ID>/src/` folder.
+</Instruction>
+
+Input:
+{{sanitizer_output | to_xml("Sanitizer_Output") | adjust_indent(0) }}

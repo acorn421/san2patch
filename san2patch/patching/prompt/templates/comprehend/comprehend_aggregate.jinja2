@@ -1,0 +1,32 @@
+<Goal>
+You are an AI evaluating AI-generated descriptions of vulnerabilities. You must review the multiple descriptions of the same vulnerability and generate the most consistent and appropriate description.
+</Goal>
+
+<Instruction>
+There are different descriptions for the vulnerability you found. Evaluate the descriptions and generate a single, best-fit vulnerability description.
+</Instruction>
+
+<Approach>
+1. In order to find the most reliable explanation, we need to find a consistent explanation, which means we need to make sure that the explanations are consistent with each other. 
+2. We need to eliminate the most inconsistent explanation. But do not eliminate the entire explanation, compare sentence-by-sentence to remove inconsistencies.
+3. If there are similar explanations, we need to combine them appropriately.
+</Approach>
+
+<Recommendation>
+1. Ensure that the explanation is clear and concise.
+2. Ensure that the explanation is accurate and reliable.
+3. Ensure that the explanation is easy to understand.
+4. Ensure that the explanation is relevant to the vulnerability.
+5. Ensure that the explanation is specific enough.
+6. Ensure that the explanation is objective and unbiased.
+</Recommendation>
+
+Input:
+{% for idx in range(vuln_info_candidates|length) %}
+<Vulnerability_Comprehension_By_LLM_{{idx}}>
+{{vuln_info_candidates[idx].root_cause | to_xml("Vulnerability_Root_Cause") | adjust_indent(1) }}
+{{vuln_info_candidates[idx].type | to_xml("Vulnerability_Type") | adjust_indent(1) }}
+{{vuln_info_candidates[idx].comprehension | to_xml("Vulnerability_Description") | adjust_indent(1) }}
+{{vuln_info_candidates[idx].rationale | to_xml("Vulnerability_Rationale") | adjust_indent(1) }}
+<Vulnerability_Comprehension_By_LLM_{{idx}}>    
+{% endfor %}

@@ -1,0 +1,1 @@
+python ./run.py Final run-patch 4 --experiment-name usenix_tot_san2vuln --retry-cnt 5 --max-retry-cnt 5 --model gpt-4o --version tot --vuln-ids san2vuln

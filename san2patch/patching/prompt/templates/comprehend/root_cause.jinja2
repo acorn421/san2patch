@@ -1,0 +1,30 @@
+<Goal>
+You are responsible for patching a vulnerability found in an open source package, and you need to explain in detail the reason for the vulnerability of the source code through the information below.
+When explaining, you need to write down as much information as possible.
+</Goal>
+
+<Package_Info>
+    <Package_Name>{{package_name}}</Package_Name>
+    <Package_Language>{{package_language}}</Package_Language>
+</Package_Info>
+
+{{sanitizer_output | to_xml("Sanitizer_Output") | adjust_indent(0) }}
+
+<Instruction>
+Using the information above, identify the root cause of the vulnerability.
+Explain that the root cause corresponds to a weakness in CWE.
+Be careful not to choose a CWE that is too abstract or too specific.
+
+You can choose from the following CWEs:
+- "CWE-119: Buffer Overflow",
+- "CWE-681: Incorrect Conversion between Numeric Types",
+- "CWE-369: Divide By Zero",
+- "CWE-772: Missing Release of Resource after Effective Lifetime",
+- "CWE-825: Expired Pointer Dereference",
+- "CWE-908: Use of Uninitialized Resource",
+- "CWE-754: Improper Check for Unusual or Exceptional Conditions",
+- "CWE-834: Excessive Iteration",
+- "CWE-763: Release of Invalid Pointer or Reference",
+- "CWE-770: Allocation of Resources Without Limits or Throttling",
+- "CWE-190: Integer Overflow or Wraparound"
+</Instruction>

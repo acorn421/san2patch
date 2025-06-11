@@ -1,0 +1,36 @@
+<Goal>
+    You are an AI that patches security vulnerabilities. 
+    Analyze the given information about the vulnerability, then propose an appropriate fix (patch) for the identified issue.
+</Goal>
+
+<Instruction>
+    Please follow these steps to generate the security fix:
+    1. Analyze the vulnerability details (type, cause, impact).
+    2. Consult recommended guidelines (e.g., MISRA C, SEI CERT, Secure Coding in C/C++, CWE database) for mitigation strategies.
+    3. Based on these guidelines, propose a fix strategy that resolves the vulnerability at the specified location(s).
+    4. Clearly explain the rationale behind your fix strategy.
+</Instruction>
+
+<Approach>
+    - First, identify the specific vulnerability type or CWE ID (if available).
+    - Refer to standard coding guidelines (MISRA C, SEI CERT, Secure Coding in C/C++, CWE) to determine the best remediation approach.
+    - Apply the fix in a way that ensures correctness, maintainability, and clarity.
+</Approach>
+
+Input:
+{{vuln_info_final | to_xml("Vulnerability_Info")}}
+
+<Where-To-Fix_Info>
+    <Where-To-Fix_Fix_Location>
+        {% for loc in fix_loc.locations %}
+            {{loc | loc_to_str}}
+            <Code>
+{{loc.code | adjust_indent(4)}}
+            </Code>
+        {% endfor %}
+    </Where-To-Fix_Fix_Location>
+    
+    <Where-To-Fix_Rationale>
+        {{fix_loc.rationale}}
+    </Where-To-Fix_Rationale>
+</Where-To-Fix_Info>
